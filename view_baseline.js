@@ -204,6 +204,32 @@ function make_all_users_list(id_prefix, attr_set_id, height=80) {
     return all_user_list
 }
 
+function make_all_users_dropdown(id_prefix, attr_set_id, height=80) {
+    // Create the dropdown element
+    let all_users_dropdown = $(`<select id="${id_prefix}_all_users" class="selectlist section" style="height:${height}px;overflow-y:auto;"></select>`);
+
+    // Populate the dropdown with user options
+    for(let username in all_users) {
+        let user = all_users[username];
+        let user_option = $(`<option value="${username}" id="${id_prefix}_${username}" class="ui-widget-content">${username}</option>`);
+        all_users_dropdown.append(user_option);
+    }
+
+    // Set up the change event listener for the dropdown
+    all_users_dropdown.change(function() {
+        let selected_username = $(this).val();
+
+        // Update the attribute of the specified element with the selected username
+        $(`#${attr_set_id}`).attr('username', selected_username);
+
+        // Assuming you want to keep the event dispatch logic:
+        emitter.dispatchEvent(new CustomEvent('userEvent', { detail: new ClickEntry(ActionEnum.CLICK, 0, 0, 'user dialog: select user ' + selected_username, new Date().getTime()) }));
+    });
+
+    return all_users_dropdown;
+}
+
+
 // populate and open the "permissions entry" dialog for a given file
 function open_permission_entry(file_path) {
     let file_obj = path_to_file[file_path]
@@ -256,7 +282,7 @@ function open_advanced_dialog(file_path) {
     }
 
     // user list for owner tab:
-    let all_user_list = make_all_users_list('adv_owner_','adv_owner_current_owner') 
+    let all_user_list = make_all_users_dropdown('adv_owner_','adv_owner_current_owner') 
 
     $('#adv_owner_current_owner').text(get_user_name(file_obj.owner))
 
@@ -295,11 +321,27 @@ function open_user_select(to_populate) {
     $('#user_select_dialog').attr('to_populate', to_populate)
 
     $('#user_select_container').empty()
-    user_select_list = make_all_users_list('user_select', 'user_select_dialog', 200)
+    user_select_list = make_all_users_dropdown('user_select', 'user_select_dialog', 200)
     $('#user_select_container').append(user_select_list)
 
     $(`#user_select_dialog`).dialog('open')
 }
+
+function open_user_select_drop(to_populate) {
+    // Assuming 'to_populate' is the ID of the select element to populate, in this case 'perm_entry_username_select'
+    // Clear any existing options in the dropdown
+    $(`#${to_populate}`).empty();
+
+    // Dynamically create and add user options to the dropdown
+    for (let username in all_users) {
+        let user = all_users[username];
+        // Append an option for each user to the dropdown
+        $(`#${to_populate}`).append(`<option value="${username}" class="ui-widget-content">${username}</option>`);
+    }
+
+    // Optionally, if you want to pre-select a user or do any additional setup after populating the dropdown, you can do it here
+}
+
 
 // set up effective permissions table in advanced -> effective dialog
 for(let p of Object.values(permissions)) {
@@ -337,7 +379,7 @@ let adv_contents = $(`#advdialog`).dialog({
 
 // open user select dialog on "select" button press:
 $("#adv_effective_user_select").click(function(event){
-    open_user_select("adv_effective_current_user") // Update element with id=adv_effective_current_user once user is selected.
+    open_user_select_drop("adv_effective_current_user") // Update element with id=adv_effective_current_user once user is selected.
 })
 
 // listen for changes to inheritance checkbox:
@@ -535,10 +577,11 @@ for(let p of Object.values(permissions)){
 $('#adv_perm_edit').click(function(){
     let filepath = $('#advdialog').attr('filepath')
     open_permission_entry(filepath)
+    open_user_select_drop('perm_entry_username_select')
 })
 
 $('#perm_entry_change_user').click(function(){
-    open_user_select('perm_entry_username') 
+    open_user_select_drop('perm_entry_username') 
 })
 
 
