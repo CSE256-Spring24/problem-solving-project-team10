@@ -47,6 +47,20 @@ function make_user_elem(id_prefix, uname, user_attributes=null) {
     return user_elem
 }
 
+function make_user_option(id_prefix, uname, user_attributes=null) {
+    // Create an option element. Note that custom icons aren't straightforward in select options.
+    let user_option = $(`<option value="${uname}" id="${id_prefix}_${uname}">${uname}</option>`);
+
+    // Add any specified attributes to the option element.
+    if (user_attributes) {
+        for (let uprop in user_attributes) {
+            user_option.attr(uprop, user_attributes[uprop]);
+        }
+    }
+
+    return user_option;
+}
+
 
 // make a list of users, suitable for inserting into a select list, given a map of user name to some arbitrary info.
 // optionally, adds all the properties listed for a given user as attributes for that user's element.
@@ -58,6 +72,20 @@ function make_user_list(id_prefix, usermap, add_attributes = false) {
         u_elements.push(user_elem)
     }
     return u_elements
+}
+
+
+function make_user_dropdown(id_prefix, usermap, add_attributes = false) {
+    // Create the select element.
+    let dropdown = $(`<select class="ui-widget-content" id="${id_prefix}_select"></select>`);
+
+    // Populate the dropdown with options for each user.
+    for (let uname in usermap) {
+        let user_option = make_user_option(id_prefix, uname, add_attributes ? usermap[uname] : null);
+        dropdown.append(user_option);
+    }
+
+    return dropdown;
 }
 
 

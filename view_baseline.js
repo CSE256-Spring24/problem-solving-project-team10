@@ -163,7 +163,7 @@ define_attribute_observer(perm_dialog, 'filepath', function(){
 
     // Generate element with all the file-specific users:
     file_users = get_file_users(path_to_file[current_filepath])
-    file_user_list = make_user_list('permdialog_file_user', file_users, add_attributes = true)
+    file_user_list = make_user_dropdown('permdialog_file_user', file_users, add_attributes = true)
     grouped_permissions.attr('username', '') // since we are reloading the user list, reset the username in permission checkboxes
     //replace previous user list with the one we just generated:
     file_permission_users.empty()
