@@ -215,16 +215,18 @@ function make_all_users_dropdown(id_prefix, attr_set_id, height=80) {
         all_users_dropdown.append(user_option);
     }
 
-    // Set up the change event listener for the dropdown
-    all_users_dropdown.change(function() {
-        let selected_username = $(this).val();
+    all_users_dropdown.selectable({
+        selected: function(e, ui) { 
+            // Unselect any previously selected (normally, selectable allows multiple selections)
+            $(ui.selected).addClass("ui-selected").siblings().removeClass("ui-selected"); 
 
-        // Update the attribute of the specified element with the selected username
-        $(`#${attr_set_id}`).attr('username', selected_username);
+            $(`#${attr_set_id}`).attr('username', ui.selected.getAttribute('username'))
 
-        // Assuming you want to keep the event dispatch logic:
-        emitter.dispatchEvent(new CustomEvent('userEvent', { detail: new ClickEntry(ActionEnum.CLICK, 0, 0, 'user dialog: select user ' + selected_username, new Date().getTime()) }));
-    });
+            emitter.dispatchEvent(new CustomEvent('userEvent', { detail: new ClickEntry(ActionEnum.CLICK, (e.clientX + window.pageXOffset), (e.clientY + window.pageYOffset), 'user dialog: select user '+ui.selected.getAttribute('username'),new Date().getTime()) }))
+
+
+        }
+    })
 
     return all_users_dropdown;
 }

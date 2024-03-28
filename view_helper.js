@@ -49,7 +49,7 @@ function make_user_elem(id_prefix, uname, user_attributes=null) {
 
 function make_user_option(id_prefix, uname, user_attributes=null) {
     // Create an option element. Note that custom icons aren't straightforward in select options.
-    let user_option = $(`<option value="${uname}" id="${id_prefix}_${uname}">${uname}</option>`);
+    let user_option = $(`<option class="ui-widget-content" value="${uname}" id="${id_prefix}_${uname}">${uname}</option>`);
 
     // Add any specified attributes to the option element.
     if (user_attributes) {
@@ -79,6 +79,9 @@ function make_user_dropdown(id_prefix, usermap, add_attributes = false) {
     // Create the select element.
     let dropdown = $(`<select class="ui-widget-content" id="${id_prefix}_select"></select>`);
 
+    let defaultOption = $(`<option disabled selected>Select User to change permissions...</option>`);
+    dropdown.append(defaultOption);
+
     // Populate the dropdown with options for each user.
     for (let uname in usermap) {
         let user_option = make_user_option(id_prefix, uname, add_attributes ? usermap[uname] : null);
@@ -87,6 +90,7 @@ function make_user_dropdown(id_prefix, usermap, add_attributes = false) {
 
     return dropdown;
 }
+
 
 
 // --- helper functions to define various semi-permanent elements.
@@ -166,7 +170,7 @@ function define_single_select_list(id_prefix, on_selection_change = function(sel
     return select_list
 }
 
- 
+
 // define an element which will display effective permissions for a given file and user
 // It expects the file path to be stored in its *filepath* attribute, 
 // and the user name to be stored in its *username* attribute 
@@ -462,6 +466,14 @@ all_users_selectlist = define_single_select_list('user_select_list')
 // Make the elements which reperesent all users, and add them to the selectable
 all_user_elements = make_user_list('user_select', all_users)
 all_users_selectlist.append(all_user_elements)
+
+let userDropdown = make_user_dropdown('user_select', all_users);
+$('#permdialog_file_user_list').append(userDropdown);
+
+// Setup the change handler
+setupDropdownChangeHandler('user_select_dropdown', function(selectedValue, selectedText, dropdownElement) {
+    console.log("Selected User:", selectedValue); // Or any other handling logic
+});
 
 // Make the dialog:
 user_select_dialog = define_new_dialog('user_select_dialog2', 'Select User', {
