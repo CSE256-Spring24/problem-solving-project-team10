@@ -247,11 +247,53 @@ function define_new_effective_permissions(
   return effective_container;
 }
 
+// define a dictionary with detailed information for each permission
+const permissionDetails = {
+  "Read": "Allows reading of the file contents and viewing file properties.",
+  "Write": "Allows writing to a file, changing file contents.",
+  "Read_Execute": "Combines Read permission with the ability to execute an application.",
+  "Modify": "Includes Read and Write permissions plus the ability to delete the file.",
+  "Full_control": "Provides full access, including changing permissions and file ownership.",
+  "Special_permissions": "Includes custom configured permissions beyond the standard set."
+};
+
+
 // Display Grouped Permissions Info
 function displayPermissionInfo(permissionGroup) {
   // Your logic to display permission info, like opening a modal with the details about the permission group
-  console.log(`Display information about the ${permissionGroup} permission.`);
+  // console.log(`Display information about the ${permissionGroup} permission.`);
   // Replace this console.log with your actual implementation
+  let infoText = permissionDetails[permissionGroup] || "No detailed information available.";
+
+  // Define the dialog content
+  let dialogContent = `
+      <div id="permission-info-dialog" title="Permission Information">
+          <p>${infoText}</p>
+      </div>
+  `;
+
+  // Append the dialog content to the body if it doesn't already exist to prevent duplicates
+  if ($("#permission-info-dialog").length === 0) {
+      $("body").append(dialogContent);
+  } else {
+      // Update the dialog content for the current permission group
+      $("#permission-info-dialog p").text(infoText);
+  }
+
+  // Initialize the dialog
+  $("#permission-info-dialog").dialog({
+      modal: true,
+      width: "auto", // Adjust width based on content
+      buttons: {
+          Ok: function() {
+              $(this).dialog("close");
+          }
+      },
+      close: function() {
+          // Remove the dialog from the DOM after closing it to prevent duplicates
+          $(this).dialog('destroy').remove();
+      }
+  });
 }
 
 // define an element which will display *grouped* permissions for a given file and user, and allow for changing them by checking/unchecking the checkboxes.
@@ -290,6 +332,7 @@ function define_grouped_permission_checkboxes(id_prefix, which_groups = null) {
     }
     group_table.append(row);
   }
+
 
   group_table.find('.groupcheckbox').prop('disabled', true); // disable all checkboxes to start
 
