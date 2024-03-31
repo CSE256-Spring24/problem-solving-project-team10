@@ -36,3 +36,7 @@
 .no-close .ui-dialog-titlebar-close {
     display: none;
 }
+
+#perm-dialog-ok-button {
+    border-color: #007fff;
+  }
