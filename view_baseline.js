@@ -359,7 +359,7 @@ $('#adv_perm_inheritance').change(function(){
         Click add to keep inherited permissions,</br>
          but they will be explicit (changing parent will no longer change this object)</br>
         </br>
-        Click remove to clear all the effective permissions.
+        Click remove to remove inherited permissions from this object.
         </div>`).dialog({ // TODO: don't create this dialog on the fly
             modal: true,
             width: 400,
