@@ -4,7 +4,14 @@
 }
 
 .section {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+
+}
+
+.button-align-right{
+    align-items: right;
+    align-content: right;
+    text-align: right;
 }
 
 .ui-selected { 
