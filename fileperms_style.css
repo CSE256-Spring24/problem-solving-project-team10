@@ -14,6 +14,23 @@
     text-align: right;
 }
 
+.left-button {
+    float: left;
+    margin-right: 10em;
+
+}
+
+.right-button {
+    float: right;
+
+}
+
+.perm_entry_checkcell{
+    text-align:center;
+    align-items: center;
+    align-content: center;
+}
+
 .ui-selected { 
     background: #007fff; 
     color: white; 

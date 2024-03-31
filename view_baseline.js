@@ -8,7 +8,7 @@ show_starter_dialogs = false // set this to "false" to disable the survey and 3-
 perm_dialog = define_new_dialog('permdialog', title='Permissions', options = {
     // The following are standard jquery-ui options. See https://jqueryui.com/dialog/
     height: 500,
-    width: 400,
+    width:400,
     buttons: {
         OK:{
             text: "OK",
@@ -354,10 +354,12 @@ $('#adv_perm_inheritance').change(function(){
     else {
         // has just been turned off - pop up dialog with add/remove/cancel
         $(`<div id="add_remove_cancel" title="Security">
-            Warning: if you proceed, inheritable permissions will no longer propagate to this object.<br/>
-            - Click Add to convert and add inherited parent permissions as explicit permissions on this object<br/>
-            - Click Remove to remove inherited parent permissions from this object<br/>
-            - Click Cancel if you do not want to modify inheritance settings at this time.<br/>
+            Warning: </br>
+            </br>
+            Click add to keep inherited permissions,</br>
+             but they will be explicit (changing parent will no longer change this object)</br>
+            </br>
+            Click remove to clear all the effective permissions.
         </div>`).dialog({ // TODO: don't create this dialog on the fly
             modal: true,
             width: 400,
@@ -506,7 +508,7 @@ let perm_entry_dialog = $('#permentry').dialog({
     modal: true,
     autoOpen: false,
     height: 500,
-    width: 400,
+    width: 800,
     appendTo: "#html-loc",
     position: { my: "top", at: "top", of: $('#html-loc') },
     buttons: {
