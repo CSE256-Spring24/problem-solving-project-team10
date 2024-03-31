@@ -41,7 +41,8 @@ function make_file_element(file_obj) {
 
 for(let root_file of root_files) {
     let file_elem = make_file_element(root_file)
-    $( "#filestructure" ).append( file_elem);    
+    $( "#filestructure" ).append( file_elem);   
+    $('.permbutton').append('Change Permissions'); 
 }
 
 

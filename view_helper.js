@@ -158,6 +158,7 @@ function define_single_select_list(
   return select_list;
 }
 
+
 // define an element which will display effective permissions for a given file and user
 // It expects the file path to be stored in its *filepath* attribute,
 // and the user name to be stored in its *username* attribute
@@ -301,36 +302,44 @@ function define_grouped_permission_checkboxes(id_prefix, which_groups = null) {
   // Set up table and header:
   let group_table = $(`
   <table id="${id_prefix}" class="ui-widget-content" width="100%">
-  <tr id="${id_prefix}_header">
-    <th id="${id_prefix}_header_p" width="50%">Permissions for <span id="${id_prefix}_header_username"></span></th>
-    <th id="${id_prefix}_header_info">Info</th>
-    <th id="${id_prefix}_header_allow">Allow</th>
-    <th id="${id_prefix}_header_deny">Deny</th>
-  </tr>
-</table>
-    `);
+    <tr id="${id_prefix}_header">
+      <th id="${id_prefix}_header_p" width="50%">Permissions for <span id="${id_prefix}_header_username"></span></th>
+      <th id="${id_prefix}_header_info">Info</th>
+      <th id="${id_prefix}_header_allow">Allow</th>
+      <th id="${id_prefix}_header_deny">Deny</th>
+    </tr>
+  </table>
+  `);
 
   if (which_groups === null) {
     which_groups = perm_groupnames;
   }
+
+  // Start with a white row:
+  let row_color = "rgb(240,248,255)";
+
   // For each permissions group, create a row:
-  for (let g of which_groups) {
-    let row = $(`<tr id="${id_prefix}_row_${g}">
-            <td id="${id_prefix}_${g}_name">${g}</td>
-        </tr>`);
+  for (let i = 0; i < which_groups.length; i++) {
+    const g = which_groups[i];
+    let row = $(`<tr id="${id_prefix}_row_${g}" style="background-color: ${row_color};">
+      <td id="${id_prefix}_${g}_name">${g}</td>
+    </tr>`);
     let infoButtonCell = $(`
-        <td id="${id_prefix}_${g}_info_cell" style="text-align:center">
-            <span id="${id_prefix}_${g}_info_icon" class="fa fa-info-circle perm_info" permission_name="${g}" setting_container_id="${id_prefix}" onclick="displayPermissionInfo('${g}')"></span>
-        </td>`);
+      <td id="${id_prefix}_${g}_info_cell" style="text-align:center">
+        <span id="${id_prefix}_${g}_info_icon" class="fa fa-info-circle perm_info" permission_name="${g}" setting_container_id="${id_prefix}" onclick="displayPermissionInfo('${g}')"></span>
+      </td>`);
     row.append(infoButtonCell);
     for (let ace_type of ['allow', 'deny']) {
       row.append(`
-          <td id="${id_prefix}_${g}_${ace_type}_cell" style="text-align:center; vertical-align:middle;">
-            <input type="checkbox" id="${id_prefix}_${g}_${ace_type}_checkbox" ptype="${ace_type}" class="groupcheckbox" group="${g}"></input>
-          </td>
-        `);
+        <td id="${id_prefix}_${g}_${ace_type}_cell" style="text-align:center; vertical-align:middle;">
+          <input type="checkbox" id="${id_prefix}_${g}_${ace_type}_checkbox" ptype="${ace_type}" class="groupcheckbox" group="${g}"></input>
+        </td>
+      `);
     }
     group_table.append(row);
+
+    // Toggle the row color for the next row:
+    row_color = row_color === "rgb(255, 255, 255)" ? "rgb(240,248,255)" : "rgb(255, 255, 255)";
   }
 
 
