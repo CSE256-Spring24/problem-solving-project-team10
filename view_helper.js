@@ -158,6 +158,35 @@ function define_single_select_list(
   return select_list;
 }
 
+// Function to create a user selection dropdown
+function createUserSelectDropdown(id_prefix, users, onChangeCallback) {
+  // Create the select element for the dropdown
+  let selectDropdown = $(
+    `<select id="${id_prefix}_userSelectDropdown" class="user-select-dropdown"></select>`
+  );
+
+  // Populate the dropdown with options for each user
+  let firstUser = null;
+  Object.keys(users).forEach((uname, index) => {
+    selectDropdown.append(`<option value="${uname}">${uname}</option>`);
+    if (index === 0) {
+      firstUser = uname; // Remember the first user
+    }
+  });
+
+  // Bind the change event to handle user selection
+  selectDropdown.change(function () {
+    let selectedUser = $(this).val();
+    onChangeCallback(selectedUser);
+  });
+
+  // Set the initial selection to the first user
+  if (firstUser !== null) {
+    selectDropdown.val(firstUser);
+  }
+
+  return selectDropdown;
+}
 
 // define an element which will display effective permissions for a given file and user
 // It expects the file path to be stored in its *filepath* attribute,
@@ -250,21 +279,25 @@ function define_new_effective_permissions(
 
 // define a dictionary with detailed information for each permission
 const permissionDetails = {
-  "Read": "Allows reading of the file contents and viewing file properties.",
-  "Write": "Allows writing to a file, changing file contents.",
-  "Read_Execute": "Combines Read permission with the ability to execute an application.",
-  "Modify": "Includes Read and Write permissions plus the ability to delete the file.",
-  "Full_control": "Provides full access, including changing permissions and file ownership.",
-  "Special_permissions": "Includes custom configured permissions beyond the standard set."
+  Read: 'Allows reading of the file contents and viewing file properties.',
+  Write: 'Allows writing to a file, changing file contents.',
+  Read_Execute:
+    'Combines Read permission with the ability to execute an application.',
+  Modify:
+    'Includes Read and Write permissions plus the ability to delete the file.',
+  Full_control:
+    'Provides full access, including changing permissions and file ownership.',
+  Special_permissions:
+    'Includes custom configured permissions beyond the standard set.',
 };
-
 
 // Display Grouped Permissions Info
 function displayPermissionInfo(permissionGroup) {
   // Your logic to display permission info, like opening a modal with the details about the permission group
   // console.log(`Display information about the ${permissionGroup} permission.`);
   // Replace this console.log with your actual implementation
-  let infoText = permissionDetails[permissionGroup] || "No detailed information available.";
+  let infoText =
+    permissionDetails[permissionGroup] || 'No detailed information available.';
 
   // Define the dialog content
   let dialogContent = `
@@ -274,26 +307,26 @@ function displayPermissionInfo(permissionGroup) {
   `;
 
   // Append the dialog content to the body if it doesn't already exist to prevent duplicates
-  if ($("#permission-info-dialog").length === 0) {
-      $("body").append(dialogContent);
+  if ($('#permission-info-dialog').length === 0) {
+    $('body').append(dialogContent);
   } else {
-      // Update the dialog content for the current permission group
-      $("#permission-info-dialog p").text(infoText);
+    // Update the dialog content for the current permission group
+    $('#permission-info-dialog p').text(infoText);
   }
 
   // Initialize the dialog
-  $("#permission-info-dialog").dialog({
-      modal: true,
-      width: "auto", // Adjust width based on content
-      buttons: {
-          Ok: function() {
-              $(this).dialog("close");
-          }
+  $('#permission-info-dialog').dialog({
+    modal: true,
+    width: 'auto', // Adjust width based on content
+    buttons: {
+      Ok: function () {
+        $(this).dialog('close');
       },
-      close: function() {
-          // Remove the dialog from the DOM after closing it to prevent duplicates
-          $(this).dialog('destroy').remove();
-      }
+    },
+    close: function () {
+      // Remove the dialog from the DOM after closing it to prevent duplicates
+      $(this).dialog('destroy').remove();
+    },
   });
 }
 
@@ -316,12 +349,13 @@ function define_grouped_permission_checkboxes(id_prefix, which_groups = null) {
   }
 
   // Start with a white row:
-  let row_color = "rgb(240,248,255)";
+  let row_color = 'rgb(240,248,255)';
 
   // For each permissions group, create a row:
   for (let i = 0; i < which_groups.length; i++) {
     const g = which_groups[i];
-    let row = $(`<tr id="${id_prefix}_row_${g}" style="background-color: ${row_color};">
+    let row =
+      $(`<tr id="${id_prefix}_row_${g}" style="background-color: ${row_color};">
       <td id="${id_prefix}_${g}_name">${g}</td>
     </tr>`);
     let infoButtonCell = $(`
@@ -339,9 +373,11 @@ function define_grouped_permission_checkboxes(id_prefix, which_groups = null) {
     group_table.append(row);
 
     // Toggle the row color for the next row:
-    row_color = row_color === "rgb(255, 255, 255)" ? "rgb(240,248,255)" : "rgb(255, 255, 255)";
+    row_color =
+      row_color === 'rgb(255, 255, 255)'
+        ? 'rgb(240,248,255)'
+        : 'rgb(255, 255, 255)';
   }
-
 
   group_table.find('.groupcheckbox').prop('disabled', true); // disable all checkboxes to start
 
@@ -635,7 +671,8 @@ function define_new_user_select_field(
   on_user_change = function (selected_user) {}
 ) {
   // Make the element:
-  let sel_section = $(`<div id="${id_prefix}_line" class="button-align-right section">
+  let sel_section =
+    $(`<div id="${id_prefix}_line" class="button-align-right section">
             <span id="${id_prefix}_field" class="ui-widget-content" style="width: 80%;display: inline-block;">&nbsp</span>
             <button id="${id_prefix}_button" class="ui-button ui-widget ui-corner-all">${select_button_text}</button>
         </div>`);
