@@ -170,7 +170,7 @@ function createUserSelectDropdown(id_prefix, users, onChangeCallback) {
   Object.keys(users).forEach((uname, index) => {
     selectDropdown.append(`<option value="${uname}">${uname}</option>`);
     if (index === 0) {
-      firstUser = uname; // Remember the first user
+      firstUser = uname;
     }
   });
 
