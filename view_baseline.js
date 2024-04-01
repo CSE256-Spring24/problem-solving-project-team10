@@ -7,7 +7,7 @@ show_starter_dialogs = false // set this to "false" to disable the survey and 3-
 // Make permissions dialog:
 perm_dialog = define_new_dialog('permdialog', title='Permissions', options = {
     // The following are standard jquery-ui options. See https://jqueryui.com/dialog/
-    height: 500,
+    height: 550,
     width: 400,
     buttons: {
         OK:{
@@ -78,9 +78,8 @@ cant_remove_dialog = define_new_dialog('cant_remove_inherited_dialog', 'Security
 })
 cant_remove_dialog.html(`
 <div id="cant_remove_text">
-    You can't remove <span id="cant_remove_username_1" class = "cant_remove_username"></span> because this object is inheriting permissions from 
-    its parent. To remove <span id="cant_remove_username_2" class = "cant_remove_username"></span>, you must prevent this object from inheriting permissions.
-    Turn off the option for inheriting permissions, and then try removing <span id="cant_remove_username_3" class = "cant_remove_username"></span>  again.
+    To remove <span id="cant_remove_username_2" class = "cant_remove_username"></span>, you must first prevent this object from inheriting permissions.
+    Uncheck "Inherit Permissions from Parent", click "Add", and then try removing <span id="cant_remove_username_3" class = "cant_remove_username"></span>  again.
 </div>`)
 
 // Make a confirmation "are you sure you want to remove?" dialog
@@ -150,15 +149,23 @@ perm_dialog.append($('<div id="permissions_user_title">Click on a user to select
 perm_dialog.append(file_permission_users)
 perm_dialog.append(perm_add_user_select)
 perm_add_user_select.append(perm_remove_user_button) // Cheating a bit again - add the remove button the the 'add user select' div, just so it shows up on the same line.
+perm_dialog.append($('<div id="adv_perm_inheritance_div"><input type="checkbox" id="adv_perm_inheritance" name="inherit"><label for="adv_perm_inheritance" id="adv_perm_inheritance_label">Inherit Permissions from Parent</label></div>'))
 perm_dialog.append(grouped_permissions)
-perm_dialog.append($('<div id="adv_perm_inheritance_div"><input type="checkbox" id="adv_perm_inheritance" name="inherit"><label for="adv_perm_inheritance" id="adv_perm_inheritance_label">Include inheritable permissions from this objects parent</label></div><div id="adv_perm_replace_child_div"><input type="checkbox" id="adv_perm_replace_child_permissions" name="replace_child"><label for="adv_perm_replace_child_permissions"id="adv_perm_replace_child_permissions_label">Replace all child object permissions with inheritable permissions from this object</label></div>'))
+perm_dialog.append($('<div id="adv_perm_replace_child_div"><input type="checkbox" id="adv_perm_replace_child_permissions" name="replace_child"><label for="adv_perm_replace_child_permissions"id="adv_perm_replace_child_permissions_label">Replace Child Permissions</label></div>'))
+
 perm_dialog.append(advanced_expl_div)
 
 // --- Additional logic for reloading contents when needed: ---
 //Define an observer which will propagate perm_dialog's filepath attribute to all the relevant elements, whenever it changes:
 define_attribute_observer(perm_dialog, 'filepath', function(){
     let current_filepath = perm_dialog.attr('filepath')
-
+    let file_obj = path_to_file[current_filepath]
+    if(file_obj.using_permission_inheritance) {
+        $('#adv_perm_inheritance').prop('checked', true)
+    }
+    else {
+        $('#adv_perm_inheritance').prop('checked', false)
+    }
     grouped_permissions.attr('filepath', current_filepath) // set filepath for permission checkboxes
     $('#permdialog_objname_namespan').text(current_filepath) // set filepath for Object Name text
 
@@ -230,13 +237,6 @@ function open_advanced_dialog(file_path) {
     $('#adv_perm_table tr:gt(0)').remove()
     $('#adv_owner_user_list').empty()
     $(`.effectivecheckcell`).empty()
-
-    if(file_obj.using_permission_inheritance) {
-        $('#adv_perm_inheritance').prop('checked', true)
-    }
-    else {
-        $('#adv_perm_inheritance').prop('checked', false)
-    }
 
 
 
@@ -504,7 +504,7 @@ let user_select_contents = $("#user_select_dialog").dialog({
 let perm_entry_dialog = $('#permentry').dialog({
     modal: true,
     autoOpen: false,
-    height: 500,
+    height: 550,
     width: 400,
     appendTo: "#html-loc",
     position: { my: "top", at: "top", of: $('#html-loc') },
@@ -702,7 +702,7 @@ $(`<div id="survey-dialog" title="Survey">
 </div>`).dialog({
     modal:true,
     width: 700,
-    height: 500,
+    height: 550,
     autoOpen: show_starter_dialogs,
     appendTo: "#html-loc",
     dialogClass: "no-close",
