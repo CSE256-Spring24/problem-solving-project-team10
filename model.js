@@ -218,3 +218,4 @@ function remove_all_perms_for_user(file, user) {
   file.acl = file.acl.filter(ace => ace.who !==user)
   emitState()
 }
+//
