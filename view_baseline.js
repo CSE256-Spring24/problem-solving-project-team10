@@ -156,9 +156,8 @@ perm_remove_user_button.click(function () {
     alert('Please select a user to remove.');
     return;
   }
-  
-  let has_inherited_permissions =
-    selected_username.attr('inherited') === 'true'; // does it have inherited attribute set to "true"?
+  console.log(all_users[selected_username])
+  let has_inherited_permissions = all_users[selected_username].using_permission_inheritance === 'true'; // does it have inherited attribute set to "true"?
 
   if (has_inherited_permissions) {
     // Not OK to remove - pop up "can't remove" dialog instead
