@@ -157,8 +157,9 @@ perm_remove_user_button.click(function () {
     alert('Please select a user to remove.');
     return;
   }
-  console.log(all_users[selected_username])
-  let has_inherited_permissions = all_users[selected_username].using_permission_inheritance === 'true'; // does it have inherited attribute set to "true"?
+  console.log(all_users[selected_username]);
+  let has_inherited_permissions =
+    all_users[selected_username].using_permission_inheritance === 'true'; // does it have inherited attribute set to "true"?
 
   if (has_inherited_permissions) {
     // Not OK to remove - pop up "can't remove" dialog instead
@@ -201,9 +202,7 @@ let userSelectDropdownContainer = $(
 
 // --- Append all the elements to the permissions dialog in the right order: ---
 perm_dialog.append(obj_name_div);
-perm_dialog.append(
-  $('<div id="permissions_user_title">Group or user names:</div>')
-);
+perm_dialog.append($('<div id="permissions_user_title">Select User:</div>'));
 
 // Appended Dropdown Container
 perm_dialog.append(userSelectDropdownContainer);
@@ -567,7 +566,6 @@ $('#adv_perm_replace_child_permissions').change(function () {
     });
   }
 });
-
 
 // listen for mutations on selected user name in effective user permissions:
 effective_user_observer = new MutationObserver(function (
