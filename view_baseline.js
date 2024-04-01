@@ -212,13 +212,12 @@ perm_dialog.append(
 perm_dialog.append(userSelectDropdownContainer);
 perm_dialog.append(perm_add_user_select);
 perm_add_user_select.append(perm_remove_user_button); // Cheating a bit again - add the remove button the the 'add user select' div, just so it shows up on the same line.
-
+perm_dialog.append(grouped_permissions);
 perm_dialog.append(
   $(
     '<div id="adv_perm_inheritance_div"><input type="checkbox" id="adv_perm_inheritance" name="inherit"><label for="adv_perm_inheritance" id="adv_perm_inheritance_label">Inherit Permissions from Parent</label></div>'
   )
 );
-perm_dialog.append(grouped_permissions);
 perm_dialog.append(
   $(
     '<div id="adv_perm_replace_child_div"><input type="checkbox" id="adv_perm_replace_child_permissions" name="replace_child"><label for="adv_perm_replace_child_permissions"id="adv_perm_replace_child_permissions_label">Replace Child Permissions</label></div>'
