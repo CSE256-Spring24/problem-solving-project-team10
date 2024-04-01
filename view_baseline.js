@@ -10,7 +10,7 @@ perm_dialog = define_new_dialog(
   (title = 'Permissions'),
   (options = {
     // The following are standard jquery-ui options. See https://jqueryui.com/dialog/
-    height: 500,
+    height: 550,
     width: 400,
     buttons: {
       OK: {
@@ -38,6 +38,7 @@ obj_name_div = $(
 );
 
 //Make the div with the explanation about special permissions/advanced settings:
+
 advanced_expl_div = $(
   '<div id="permdialog_advanced_explantion_text">For special permissions or advanced settings, click Advanced.</div>'
 );
@@ -476,6 +477,7 @@ $('#adv_perm_inheritance').change(function () {
   } else {
     // has just been turned off - pop up dialog with add/remove/cancel
     $(`<div id="add_remove_cancel" title="Security">
+
         Warning: </br>
         </br>
         Click add to keep inherited permissions,</br>
@@ -565,6 +567,7 @@ $('#adv_perm_replace_child_permissions').change(function () {
     });
   }
 });
+
 
 // listen for mutations on selected user name in effective user permissions:
 effective_user_observer = new MutationObserver(function (
