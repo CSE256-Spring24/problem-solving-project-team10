@@ -40,7 +40,7 @@ obj_name_div = $(
 //Make the div with the explanation about special permissions/advanced settings:
 
 advanced_expl_div = $(
-  '<div id="permdialog_advanced_explantion_text">For special permissions or advanced settings, click Advanced.</div>'
+  '<div id="permdialog_advanced_explantion_text"></div>'
 );
 
 // Make the (grouped) permission checkboxes table:
@@ -98,9 +98,8 @@ cant_remove_dialog = define_new_dialog(
 );
 cant_remove_dialog.html(`
 <div id="cant_remove_text">
-    You can't remove <span id="cant_remove_username_1" class = "cant_remove_username"></span> because this object is inheriting permissions from 
-    its parent. To remove <span id="cant_remove_username_2" class = "cant_remove_username"></span>, you must prevent this object from inheriting permissions.
-    Turn off the option for inheriting permissions, and then try removing <span id="cant_remove_username_3" class = "cant_remove_username"></span>  again.
+To remove <span id="cant_remove_username_2" class = "cant_remove_username"></span>, you must first prevent this object from inheriting permissions.
+Uncheck "Inherit Permissions from Parent", click "Add", and then try removing <span id="cant_remove_username_3" class = "cant_remove_username"></span>  again.
 </div>`);
 
 // Make a confirmation "are you sure you want to remove?" dialog
@@ -152,16 +151,13 @@ perm_remove_user_button = $(
 perm_remove_user_button.click(function () {
   // Get the currently selected username from the dropdown
   let selected_username = $('#permdialog_user_select_dropdown').val();
-
   if (!selected_username) {
     alert('Please select a user to remove.');
     return;
   }
-  console.log(all_users[selected_username]);
-  let has_inherited_permissions =
-    all_users[selected_username].using_permission_inheritance === 'true'; // does it have inherited attribute set to "true"?
-
-  if (has_inherited_permissions) {
+  let current_filepath = perm_dialog.attr('filepath')
+  let file_obj = path_to_file[current_filepath]
+  if(file_obj.using_permission_inheritance) {
     // Not OK to remove - pop up "can't remove" dialog instead
     $('.cant_remove_username').each(function () {
       $(this).text(selected_username);
@@ -181,6 +177,7 @@ $('#are-you-sure-yes-button').click(function () {
   let filepath = perm_dialog.attr('filepath');
 
   // Assuming remove_all_perms_for_user() and path_to_file[] correctly handle the removal of permissions
+  console.log(path_to_file[filepath])
   remove_all_perms_for_user(
     path_to_file[filepath],
     all_users[usernameToRemove]
@@ -228,8 +225,14 @@ perm_dialog.append(advanced_expl_div);
 // --- Additional logic for reloading contents when needed: ---
 //Define an observer which will propagate perm_dialog's filepath attribute to all the relevant elements, whenever it changes:
 define_attribute_observer(perm_dialog, 'filepath', function () {
-  let current_filepath = perm_dialog.attr('filepath');
-
+  let current_filepath = perm_dialog.attr('filepath')
+  let file_obj = path_to_file[current_filepath]
+  if(file_obj.using_permission_inheritance) {
+      $('#adv_perm_inheritance').prop('checked', true)
+  }
+  else {
+      $('#adv_perm_inheritance').prop('checked', false)
+  }
   grouped_permissions.attr('filepath', current_filepath); // set filepath for permission checkboxes
   $('#permdialog_objname_namespan').text(current_filepath); // set filepath for Object Name text
 
@@ -341,12 +344,6 @@ function open_advanced_dialog(file_path) {
   $('#adv_perm_table tr:gt(0)').remove();
   $('#adv_owner_user_list').empty();
   $(`.effectivecheckcell`).empty();
-
-  if (file_obj.using_permission_inheritance) {
-    $('#adv_perm_inheritance').prop('checked', true);
-  } else {
-    $('#adv_perm_inheritance').prop('checked', false);
-  }
 
   // permissions list for permissions tab:
   let users = get_file_users(file_obj);
