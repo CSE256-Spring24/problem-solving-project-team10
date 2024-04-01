@@ -514,6 +514,7 @@ let perm_entry_dialog = $('#permentry').dialog({
             id: "permission-entry-ok-button",
             click: function() {
                 open_advanced_dialog($('#advdialog').attr('filepath') )// redo advanced dialog (recalc permissions)
+                let filepath = $('#advdialog').attr('filepath')
                 perm_dialog.attr('filepath', filepath) // reload contents of permissions dialog
                 $( this ).dialog( "close" );
             }
