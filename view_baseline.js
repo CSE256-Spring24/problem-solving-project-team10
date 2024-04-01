@@ -39,9 +39,7 @@ obj_name_div = $(
 
 //Make the div with the explanation about special permissions/advanced settings:
 
-advanced_expl_div = $(
-  '<div id="permdialog_advanced_explantion_text"></div>'
-);
+advanced_expl_div = $('<div id="permdialog_advanced_explantion_text"></div>');
 
 // Make the (grouped) permission checkboxes table:
 grouped_permissions = define_grouped_permission_checkboxes(
@@ -155,9 +153,9 @@ perm_remove_user_button.click(function () {
     alert('Please select a user to remove.');
     return;
   }
-  let current_filepath = perm_dialog.attr('filepath')
-  let file_obj = path_to_file[current_filepath]
-  if(file_obj.using_permission_inheritance) {
+  let current_filepath = perm_dialog.attr('filepath');
+  let file_obj = path_to_file[current_filepath];
+  if (file_obj.using_permission_inheritance) {
     // Not OK to remove - pop up "can't remove" dialog instead
     $('.cant_remove_username').each(function () {
       $(this).text(selected_username);
@@ -177,7 +175,7 @@ $('#are-you-sure-yes-button').click(function () {
   let filepath = perm_dialog.attr('filepath');
 
   // Assuming remove_all_perms_for_user() and path_to_file[] correctly handle the removal of permissions
-  console.log(path_to_file[filepath])
+  console.log(path_to_file[filepath]);
   remove_all_perms_for_user(
     path_to_file[filepath],
     all_users[usernameToRemove]
@@ -225,13 +223,12 @@ perm_dialog.append(advanced_expl_div);
 // --- Additional logic for reloading contents when needed: ---
 //Define an observer which will propagate perm_dialog's filepath attribute to all the relevant elements, whenever it changes:
 define_attribute_observer(perm_dialog, 'filepath', function () {
-  let current_filepath = perm_dialog.attr('filepath')
-  let file_obj = path_to_file[current_filepath]
-  if(file_obj.using_permission_inheritance) {
-      $('#adv_perm_inheritance').prop('checked', true)
-  }
-  else {
-      $('#adv_perm_inheritance').prop('checked', false)
+  let current_filepath = perm_dialog.attr('filepath');
+  let file_obj = path_to_file[current_filepath];
+  if (file_obj.using_permission_inheritance) {
+    $('#adv_perm_inheritance').prop('checked', true);
+  } else {
+    $('#adv_perm_inheritance').prop('checked', false);
   }
   grouped_permissions.attr('filepath', current_filepath); // set filepath for permission checkboxes
   $('#permdialog_objname_namespan').text(current_filepath); // set filepath for Object Name text
@@ -652,6 +649,7 @@ let perm_entry_dialog = $('#permentry').dialog({
       id: 'permission-entry-ok-button',
       click: function () {
         open_advanced_dialog($('#advdialog').attr('filepath')); // redo advanced dialog (recalc permissions)
+        let filepath = $('#advdialog').attr('filepath');
         perm_dialog.attr('filepath', filepath); // reload contents of permissions dialog
         $(this).dialog('close');
       },
