@@ -32,7 +32,7 @@ perm_dialog = define_new_dialog('permdialog', title='Permissions', options = {
 obj_name_div = $('<div id="permdialog_objname" class="section">Object Name: <span id="permdialog_objname_namespan"></span> </div>')
 
 //Make the div with the explanation about special permissions/advanced settings:
-advanced_expl_div = $('<div id="permdialog_advanced_explantion_text">For special permissions or advanced settings, click Advanced.</div>')
+//**disabled**advanced_expl_div = $('<div id="permdialog_advanced_explantion_text">For special permissions or advanced settings, click Advanced.</div>')
 
 // Make the (grouped) permission checkboxes table:
 grouped_permissions = define_grouped_permission_checkboxes('permdialog_grouped_permissions')
@@ -151,6 +151,7 @@ perm_dialog.append(file_permission_users)
 perm_dialog.append(perm_add_user_select)
 perm_add_user_select.append(perm_remove_user_button) // Cheating a bit again - add the remove button the the 'add user select' div, just so it shows up on the same line.
 perm_dialog.append(grouped_permissions)
+perm_dialog.append($('<div id="adv_perm_inheritance_div"><input type="checkbox" id="adv_perm_inheritance" name="inherit"><label for="adv_perm_inheritance" id="adv_perm_inheritance_label">Include inheritable permissions from this objects parent</label></div><div id="adv_perm_replace_child_div"><input type="checkbox" id="adv_perm_replace_child_permissions" name="replace_child"><label for="adv_perm_replace_child_permissions"id="adv_perm_replace_child_permissions_label">Replace all child object permissions with inheritable permissions from this object</label></div>'))
 perm_dialog.append(advanced_expl_div)
 
 // --- Additional logic for reloading contents when needed: ---
@@ -342,13 +343,12 @@ $("#adv_effective_user_select").click(function(event){
 
 // listen for changes to inheritance checkbox:
 $('#adv_perm_inheritance').change(function(){
-    let filepath = $('#advdialog').attr('filepath')
+    let filepath = perm_dialog.attr('filepath')
     let file_obj = path_to_file[filepath]
     if( $('#adv_perm_inheritance').prop('checked')) {
         // has just been turned on
         file_obj.using_permission_inheritance = true
         emitState()
-        open_advanced_dialog(filepath) // reload/reopen dialog
         perm_dialog.attr('filepath', filepath) // force reload 'permissions' dialog
     }
     else {
@@ -370,10 +370,9 @@ $('#adv_perm_inheritance').change(function(){
                     text: "Add",
                     id: "adv-inheritance-add-button",
                     click: function() {
-                        let filepath = $('#advdialog').attr('filepath')
+                        let filepath = perm_dialog.attr('filepath')
                         let file_obj = path_to_file[filepath]
                         convert_parent_permissions(file_obj)
-                        open_advanced_dialog(filepath) // reload/reopen 'advanced' dialog
                         perm_dialog.attr('filepath', filepath) // force reload 'permissions' dialog
                         $( this ).dialog( "close" );
                     },
@@ -382,11 +381,10 @@ $('#adv_perm_inheritance').change(function(){
                     text: "Remove",
                     id: "adv-inheritance-remove-button",
                     click: function() {
-                        let filepath = $('#advdialog').attr('filepath')
+                        let filepath = perm_dialog.attr('filepath')
                         let file_obj = path_to_file[filepath]
                         file_obj.using_permission_inheritance = false
                         emitState()
-                        open_advanced_dialog(filepath) // reload/reopen 'advanced' dialog
                         perm_dialog.attr('filepath', filepath) // force reload 'permissions' dialog
                         $( this ).dialog( "close" );
                     },
@@ -409,7 +407,7 @@ $('#adv_perm_inheritance').change(function(){
 $('#adv_perm_replace_child_permissions').change(function(){
     if( $('#adv_perm_replace_child_permissions').prop('checked')) {
         // we only care when it's been checked (nothing happens on uncheck) (this should really not be a checkbox...)
-        let filepath = $('#advdialog').attr('filepath')
+        let filepath = perm_dialog.attr('filepath')
         let file_obj = path_to_file[filepath]
         $(`<div id="replace_perm_dialog" title="Security">
             This will replace explicitly defined permissions on all descendants of this object with inheritable permissions from ${file_obj.filename}.<br/>
@@ -423,10 +421,9 @@ $('#adv_perm_replace_child_permissions').change(function(){
                     text: "Yes",
                     id: "adv-replace-yes-button",
                     click: function() {
-                        let filepath = $('#advdialog').attr('filepath')
+                        let filepath = perm_dialog.attr('filepath')
                         let file_obj = path_to_file[filepath]
                         replace_child_perm_with_inherited(file_obj)
-                        open_advanced_dialog(filepath) // reload/reopen 'advanced' dialog
                         perm_dialog.attr('filepath', filepath) // reload contents of permissions dialog
                         $( this ).dialog( "close" );
                     },
