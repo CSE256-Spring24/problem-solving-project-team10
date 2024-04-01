@@ -202,7 +202,11 @@ let userSelectDropdownContainer = $(
 
 // --- Append all the elements to the permissions dialog in the right order: ---
 perm_dialog.append(obj_name_div);
-perm_dialog.append($('<div id="permissions_user_title">Select User:</div>'));
+perm_dialog.append(
+  $(
+    '<div id="permissions_user_title">Select User to Change Permissions For:</div>'
+  )
+);
 
 // Appended Dropdown Container
 perm_dialog.append(userSelectDropdownContainer);
