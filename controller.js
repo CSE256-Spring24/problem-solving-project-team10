@@ -41,14 +41,7 @@ permission_groups = {
         permissions.WRITE_ATTR,
         permissions.WRITE_EXTENDED_ATTR,
     ],
-    Read_Execute: [
-        permissions.LIST,
-        permissions.READ_ATTR,
-        permissions.READ_EXTENDED_ATTR,
-        permissions.READ_PERMS,
-        permissions.EXECUTE,
-    ],
-    Modify: [
+    Make_Changes: [
         permissions.WRITE_DATA,
         permissions.APPEND_DATA,
         permissions.WRITE_ATTR,
@@ -56,7 +49,7 @@ permission_groups = {
         permissions.DELETE,
         permissions.DELETE_SUB,
     ],
-    Full_control: [
+    Full_Control: [
         permissions.LIST,
         permissions.READ_ATTR,
         permissions.READ_EXTENDED_ATTR,
@@ -72,14 +65,14 @@ permission_groups = {
         permissions.CHANGE_PERMS,
         permissions.TAKE_OWNERSHIP,
     ],
+    Delete: [
+        permissions.DELETE, permissions.DELETE_SUB,
+    ]
 };
 perm_groupnames = Object.keys(permission_groups);
-perm_groupnames.push('Special_permissions');
 
 // Extra permission groups (this way Read, Write, Delete, Other make up the whole set; and are disjoint)
 // TODO/commit when??: WRITE_DATA should actually be in Write, also. [not in Other]
-
-permission_groups['Delete'] = [permissions.DELETE, permissions.DELETE_SUB];
 permission_groups['Other'] = [
     permissions.EXECUTE,
     permissions.CHANGE_PERMS,
