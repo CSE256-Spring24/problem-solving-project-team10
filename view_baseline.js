@@ -10,7 +10,7 @@ perm_dialog = define_new_dialog(
   (title = 'Permissions'),
   (options = {
     // The following are standard jquery-ui options. See https://jqueryui.com/dialog/
-    height: 550,
+    height: 350,
     width: 800,
     buttons: {
       OK: {
@@ -192,14 +192,14 @@ $('#are-you-sure-yes-button').click(function () {
 
 // Create Dropdown Container
 let userSelectDropdownContainer = $(
-  '<div id="permdialog_user_select_dropdown_container" class="section"></div>'
+  '<span id="permdialog_user_select_dropdown_container" class="section"></span>'
 );
 
 // --- Append all the elements to the permissions dialog in the right order: ---
 perm_dialog.append(obj_name_div);
 perm_dialog.append(
   $(
-    '<div id="permissions_user_title">Select User to Change Permissions For:</div>'
+    '<span id="permissions_user_title">Select User to Change Permissions For:</span>'
   )
 );
 
