@@ -281,14 +281,12 @@ function define_new_effective_permissions(
 const permissionDetails = {
   Read: 'Allows reading of the file contents and viewing file properties.',
   Write: 'Allows writing to a file, changing file contents.',
-  Read_Execute:
-    'Combines Read permission with the ability to execute an application.',
-  Modify:
+  Make_Changes:
     'Includes Read and Write permissions plus the ability to delete the file.',
-  Full_control:
+  Full_Control:
     'Provides full access, including changing permissions and file ownership.',
-  Special_permissions:
-    'Includes custom configured permissions beyond the standard set.',
+  Delete:
+    'Allows the ability to delete files.'
 };
 
 // Display Grouped Permissions Info
