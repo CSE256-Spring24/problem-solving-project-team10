@@ -47,3 +47,18 @@
 #perm-dialog-ok-button {
     border-color: #007fff;
   }
+#permdialog_user_select_dropdown {
+    margin-left: 15px;
+}
+#permdialog_user_select_dropdown_container {
+    display: inline-block;
+}
+#perm_add_user_line {
+    display: inline-block;
+}
+#perm_add_user_button {
+    margin-left: 50px;
+}
+#perm_remove_user {
+    margin-left: 20px;
+}
