@@ -11,7 +11,7 @@ perm_dialog = define_new_dialog(
   (options = {
     // The following are standard jquery-ui options. See https://jqueryui.com/dialog/
     height: 550,
-    width: 400,
+    width: 800,
     buttons: {
       OK: {
         text: 'OK',
@@ -34,7 +34,7 @@ perm_dialog = define_new_dialog(
 // Make the initial "Object Name:" text:
 // If you pass in valid HTML to $(), it will *create* elements instead of selecting them. (You still have to append them, though)
 obj_name_div = $(
-  '<div id="permdialog_objname" class="section">Object Name: <span id="permdialog_objname_namespan"></span> </div>'
+  ''
 );
 
 //Make the div with the explanation about special permissions/advanced settings:
@@ -232,7 +232,7 @@ define_attribute_observer(perm_dialog, 'filepath', function () {
   }
   grouped_permissions.attr('filepath', current_filepath); // set filepath for permission checkboxes
   $('#permdialog_objname_namespan').text(current_filepath); // set filepath for Object Name text
-
+  $('#permdialog').dialog( "option", "title", "Permissions for "+current_filepath )
   // Generate the dropdown with all the file-specific users
   let userSelectDropdown = $(
     '<select id="permdialog_user_select_dropdown" class="user-select-dropdown"></select>'
