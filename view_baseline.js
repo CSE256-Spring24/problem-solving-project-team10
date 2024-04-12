@@ -8,10 +8,17 @@ show_starter_dialogs = false; // set this to "false" to disable the survey and 3
 perm_dialog = define_new_dialog(
   'permdialog',
   (title = 'Permissions'),
+  
   (options = {
     // The following are standard jquery-ui options. See https://jqueryui.com/dialog/
     height: 350,
     width: 800,
+    open: function(event, ui) {
+      // Alert when the dialog opens
+      setTimeout(function() {
+        alert("Select Users From Dropdown Menu");
+      }, 100);
+    },
     buttons: {
       OK: {
         text: 'OK',
