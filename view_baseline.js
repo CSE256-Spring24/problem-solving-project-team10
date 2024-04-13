@@ -78,7 +78,8 @@ perm_add_user_select = define_new_user_select_field(
         // Check if user does not already exist
         userDropdown.append(new Option(selected_user, selected_user));
       }
-      userDropdown.val(selected_user);//makes the new user the currently selected user
+      userDropdown.val(selected_user);//makes the new user the currently selected user in the dropdown
+      grouped_permissions.attr('username', selected_user);
     }
   }
 );
