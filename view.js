@@ -1,5 +1,6 @@
 // ---- Define your dialogs  and panels here ----
 
+$('#perm_add_user_button').attr('title', 'Add another user to have permissions for this item');
 
 
 // ---- Display file structure ----

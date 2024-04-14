@@ -23,6 +23,7 @@ perm_dialog = define_new_dialog(
       OK: {
         text: 'OK',
         id: 'perm-dialog-ok-button',
+        title: 'Saves Changes',
         click: function () {
           $(this).dialog('close');
         },
@@ -30,6 +31,7 @@ perm_dialog = define_new_dialog(
       Advanced: {
         text: 'Advanced',
         id: 'perm-dialog-advanced-button',
+        title: 'Opens another menu with more detailed controls. Not needed for most tasks, but may be helpful if you are not finding something in this menu',
         click: function () {
           open_advanced_dialog(perm_dialog.attr('filepath'));
         },
@@ -153,7 +155,7 @@ are_you_sure_dialog.text('Do you want to remove permissions for this user?');
 
 // Make actual "remove" button:
 perm_remove_user_button = $(
-  '<button id="perm_remove_user" class="ui-button ui-widget ui-corner-all">Remove Users</button>'
+  '<button id="perm_remove_user" title="Remove the currently selected user from this item/folder" class="ui-button ui-widget ui-corner-all">Remove Users</button>'
 );
 perm_remove_user_button.click(function () {
   // Get the currently selected username from the dropdown
