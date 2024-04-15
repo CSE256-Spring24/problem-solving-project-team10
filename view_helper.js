@@ -289,6 +289,34 @@ const permissionDetails = {
     'Allows the ability to delete files.'
 };
 
+//********************************************************************************
+// show tooltip
+function showTooltip(event, permissionName) {
+  let tooltip = document.getElementById('tooltip');
+  if (!tooltip) {
+    tooltip = document.createElement('div');
+    tooltip.setAttribute('id', 'tooltip');
+    document.body.appendChild(tooltip);
+  }
+  tooltip.textContent = permissionDetails[permissionName] || 'No detailed information available.';
+  tooltip.style.display = 'block';
+  tooltip.style.left = event.pageX + 15 + 'px';
+  tooltip.style.top = event.pageY + 15 + 'px';
+  tooltip.style.position = 'absolute';
+  tooltip.style.border = '1px solid #ccc';
+  tooltip.style.backgroundColor = 'lightyellow';
+  tooltip.style.padding = '5px';
+  tooltip.style.zIndex = 1000;
+}
+// hide tooltip
+function hideTooltip() {
+  const tooltip = document.getElementById('tooltip');
+  if (tooltip) {
+    tooltip.style.display = 'none';
+  }
+}
+//********************************************************************************
+
 // Display Grouped Permissions Info
 function displayPermissionInfo(permissionGroup) {
   // Your logic to display permission info, like opening a modal with the details about the permission group
@@ -328,6 +356,7 @@ function displayPermissionInfo(permissionGroup) {
   });
 }
 
+
 // define an element which will display *grouped* permissions for a given file and user, and allow for changing them by checking/unchecking the checkboxes.
 function define_grouped_permission_checkboxes(id_prefix, which_groups = null) {
   // Set up table and header:
@@ -361,6 +390,18 @@ function define_grouped_permission_checkboxes(id_prefix, which_groups = null) {
         <span id="${id_prefix}_${g}_info_icon" class="fa fa-info-circle perm_info" permission_name="${g}" setting_container_id="${id_prefix}" onclick="displayPermissionInfo('${g}')"></span>
       </td>`);
     row.append(infoButtonCell);
+
+    //********************************************************************************
+    infoButtonCell.find(`#${id_prefix}_${g}_info_icon`).hover(
+      function(event) { // Mouse over
+        showTooltip(event, g);
+      }, 
+      function() { // Mouse out
+        hideTooltip();
+      }
+    );
+    //********************************************************************************
+
     for (let ace_type of ['allow', 'deny']) {
       row.append(`
         <td id="${id_prefix}_${g}_${ace_type}_cell" style="text-align:center; vertical-align:middle;">
