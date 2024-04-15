@@ -8,16 +8,22 @@ show_starter_dialogs = false; // set this to "false" to disable the survey and 3
 perm_dialog = define_new_dialog(
   'permdialog',
   (title = 'Permissions'),
-  
   (options = {
-    // The following are standard jquery-ui options. See https://jqueryui.com/dialog/
     height: 350,
     width: 800,
-    open: function(event, ui) {
+    open: function (event, ui) {
       // Alert when the dialog opens
-      setTimeout(function() {
-        alert("Select Users From Dropdown Menu");
+      setTimeout(function () {
+        alert('Select Users From Dropdown Menu');
       }, 100);
+
+      $('#perm-dialog-advanced-button').tooltip({
+        items: '#perm-dialog-advanced-button',
+        content:
+          'Opens another menu with more detailed controls. Not needed for most tasks, but may be helpful if you are not finding something in this menu',
+        position: { my: 'center bottom', at: 'center top-10' },
+        tooltipClass: 'ui-state-highlight',
+      });
     },
     buttons: {
       OK: {
@@ -31,7 +37,7 @@ perm_dialog = define_new_dialog(
       Advanced: {
         text: 'Advanced',
         id: 'perm-dialog-advanced-button',
-        title: 'Opens another menu with more detailed controls. Not needed for most tasks, but may be helpful if you are not finding something in this menu',
+        title: 'Click for more options',
         click: function () {
           open_advanced_dialog(perm_dialog.attr('filepath'));
         },
@@ -42,9 +48,7 @@ perm_dialog = define_new_dialog(
 
 // Make the initial "Object Name:" text:
 // If you pass in valid HTML to $(), it will *create* elements instead of selecting them. (You still have to append them, though)
-obj_name_div = $(
-  ''
-);
+obj_name_div = $('');
 
 //Make the div with the explanation about special permissions/advanced settings:
 
@@ -80,7 +84,7 @@ perm_add_user_select = define_new_user_select_field(
         // Check if user does not already exist
         userDropdown.append(new Option(selected_user, selected_user));
       }
-      userDropdown.val(selected_user);//makes the new user the currently selected user in the dropdown
+      userDropdown.val(selected_user); //makes the new user the currently selected user in the dropdown
       grouped_permissions.attr('username', selected_user);
     }
   }
@@ -243,7 +247,11 @@ define_attribute_observer(perm_dialog, 'filepath', function () {
   }
   grouped_permissions.attr('filepath', current_filepath); // set filepath for permission checkboxes
   $('#permdialog_objname_namespan').text(current_filepath); // set filepath for Object Name text
-  $('#permdialog').dialog( "option", "title", "Permissions for "+current_filepath )
+  $('#permdialog').dialog(
+    'option',
+    'title',
+    'Permissions for ' + current_filepath
+  );
   // Generate the dropdown with all the file-specific users
   let userSelectDropdown = $(
     '<select id="permdialog_user_select_dropdown" class="user-select-dropdown"></select>'
