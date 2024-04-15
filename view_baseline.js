@@ -9,7 +9,7 @@ perm_dialog = define_new_dialog(
   'permdialog',
   (title = 'Permissions'),
   (options = {
-    height: 350,
+    height: 400,
     width: 800,
     open: function (event, ui) {
       // Alert when the dialog opens
