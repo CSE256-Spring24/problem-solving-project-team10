@@ -14,7 +14,7 @@ perm_dialog = define_new_dialog(
     open: function (event, ui) {
       // Alert when the dialog opens
       setTimeout(function () {
-        alert('Select Users From Dropdown Menu');
+        alert('Select Users From Dropdown Menu or Add new users');
       }, 100);
 
       $('#perm-dialog-advanced-button').tooltip({
