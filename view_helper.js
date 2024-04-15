@@ -281,12 +281,10 @@ function define_new_effective_permissions(
 const permissionDetails = {
   Read: 'Allows reading of the file contents and viewing file properties.',
   Write: 'Allows writing to a file, changing file contents.',
-  Make_Changes:
-    'Includes Read and Write permissions plus the ability to delete the file.',
-  Full_Control:
+  Make_Changes: 'Includes Write permissions and Delete Permissions.',
+  Full_Access:
     'Provides full access, including changing permissions and file ownership.',
-  Delete:
-    'Allows the ability to delete files.'
+  Delete: 'Allows the ability to delete files.',
 };
 
 //********************************************************************************
@@ -298,7 +296,8 @@ function showTooltip(event, permissionName) {
     tooltip.setAttribute('id', 'tooltip');
     document.body.appendChild(tooltip);
   }
-  tooltip.textContent = permissionDetails[permissionName] || 'No detailed information available.';
+  tooltip.textContent =
+    permissionDetails[permissionName] || 'No detailed information available.';
   tooltip.style.display = 'block';
   tooltip.style.left = event.pageX + 15 + 'px';
   tooltip.style.top = event.pageY + 15 + 'px';
@@ -356,7 +355,6 @@ function displayPermissionInfo(permissionGroup) {
   });
 }
 
-
 // define an element which will display *grouped* permissions for a given file and user, and allow for changing them by checking/unchecking the checkboxes.
 function define_grouped_permission_checkboxes(id_prefix, which_groups = null) {
   // Set up table and header:
@@ -393,10 +391,12 @@ function define_grouped_permission_checkboxes(id_prefix, which_groups = null) {
 
     //********************************************************************************
     infoButtonCell.find(`#${id_prefix}_${g}_info_icon`).hover(
-      function(event) { // Mouse over
+      function (event) {
+        // Mouse over
         showTooltip(event, g);
-      }, 
-      function() { // Mouse out
+      },
+      function () {
+        // Mouse out
         hideTooltip();
       }
     );
